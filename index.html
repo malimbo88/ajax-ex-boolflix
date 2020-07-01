@@ -11,17 +11,31 @@
   </head>
   <body>
     <div class="general_container">
+      <input type="text" placeholder="search movie" id="search_movie"></input>
+      <button type="button" name="button" id="btn_search">Search Button</button>
+      <div class="movies_wrapper">
+        <ul class="movies_list">
 
+        </ul>
+      </div>
     </div>
 
     <!-- Handelbars -->
-    <script id="entry-template" type="text/x-handlebars-template">
-      <div class="entry">
-        <h1>{{title}}</h1>
-        <div class="body">
-          {{body}}
-        </div>
-      </div>
+    <script id="template_movie" type="text/x-handlebars-template">
+
+
+      <li class="single_movie">
+
+        <!-- movie - {{title}} -->
+        <h2>{{title}}</h2>
+        <span>original title: {{original_title}} - </span>
+        <span>original language: {{original_language}} - </span>
+        <span>vote average: {{vote_average}}</span>
+        <!-- end movie - {{title}} -->
+
+      </li>
+      
+
     </script>
     <!-- end Handelbars -->
 
