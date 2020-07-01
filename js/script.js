@@ -5,10 +5,18 @@ $(document).ready( function() {
   var apiUrl = "https://api.themoviedb.org/3/search/movie"
   var apiKey = "037cb7e7c9242bc9f153448eeeda4619";
 
-  //Evento button Search
+  //Evento button click su Search button
   $("button#btn_search").click( function() {
     var apiQuery = $("input#search_movie").val()
     searchMovieApi (apiUrl, apiKey, apiQuery)
+  });
+
+  //Evento keypress enter su Search bar
+  $("input#search_movie").keypress( function() {
+    if(event.which === 13 || event.keyCode === 13) {
+      var apiQuery = $("input#search_movie").val()
+      searchMovieApi (apiUrl, apiKey, apiQuery)
+    }
   });
 
   //Function searchMovieApi
