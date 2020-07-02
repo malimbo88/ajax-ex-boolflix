@@ -20,24 +20,35 @@
       </div>
     </div>
 
-    <!-- Handelbars -->
+    <!-- Handelbars template Movies & Tv shows -->
     <script id="template_movie" type="text/x-handlebars-template">
 
-
+      <!-- movie - {{title}} -->
       <li class="single_movie">
-
-        <!-- movie - {{title}} -->
         <h2>{{title}}</h2>
-        <span>original title: {{original_title}} - </span>
-        <span>original language: {{original_language}} - </span>
-        <span>vote average: {{vote_average}}</span>
-        <!-- end movie - {{title}} -->
-
+        <ul>
+          <li><span>original title: {{original_title}}</span></li>
+          <li><span>original language: {{original_language}}</span></li>
+          <li><span>vote average: {{vote_average}}</span></li>
+        </ul>
       </li>
-      
+      <!-- end movie - {{title}} -->
 
     </script>
-    <!-- end Handelbars -->
+    <!-- end Handelbars template Movies & Tv shows -->
+
+    <!-- Handelbars template Error message -->
+    <script id="template_error" type="text/x-handlebars-template">
+
+      <!-- error - {{error_type}} -->
+      <li class="error_message">
+        <h2>{{error_type}}</h2>
+        <div><span>Error: {{error_text}}</span></div>
+      </li>
+      <!-- error - {{error_type}} -->
+
+    </script>
+    <!-- end Handelbars template Error message -->
 
     <script type="text/javascript" src="js/script.js"></script>
   </body>
