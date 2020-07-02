@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     <link rel="stylesheet" href="css/style.css">
     <title>ajax-ex-boolflix</title>
   </head>
@@ -27,9 +28,17 @@
       <li class="single_movie">
         <h2>{{title}}</h2>
         <ul>
-          <li><span>original title: {{original_title}}</span></li>
-          <li><span>original language: {{original_language}}</span></li>
-          <li><span>vote average: {{vote_average}}</span></li>
+          <li>
+            <span class="original_title">original title: {{original_title}}</span>
+          </li>
+          <li>
+            <div class="language_flag">
+              {{{original_language}}}
+            </div>
+          </li>
+          <li>
+            <div class="vote_average_icons">{{{vote_average}}}</div>
+          </li>
         </ul>
       </li>
       <!-- end movie - {{title}} -->

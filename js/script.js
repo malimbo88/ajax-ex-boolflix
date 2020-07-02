@@ -41,7 +41,7 @@ $(document).ready( function() {
           //Variabile che indica un Array di oggetti fornito da Api
           //Ogni oggetto rappresenta un Film
           var dataSuccessResults = dataSuccess.results;
-
+          console.log(dataSuccessResults)
           //Nel caso Api in base ai valori di ricerca digitati da utente
           //Non produca alcun risultato, stampo un messaggio di errore
           if (dataSuccessResults.length === 0) {
@@ -57,7 +57,6 @@ $(document).ready( function() {
           }
         },
         error: function (dataError) {
-          console.log(apiErrorNumber)
           //Variabile che riporta il codice numerico di errore fornito da Api
           var apiErrorNumber = dataError.status;
 
@@ -95,7 +94,9 @@ $(document).ready( function() {
       var movieTitle = currentMovieObject.title
       var movieOriginalTitle = currentMovieObject.original_title
       var movieOriginalLanguage = currentMovieObject.original_language
-      var movieVoteAverage = currentMovieObject.vote_average
+      var movieLanguageFlag = languageFlag (movieOriginalLanguage)
+      var movieVoteAverageNumber = currentMovieObject.vote_average
+      var movieVoteAverageStars = voteAverageStars (movieVoteAverageNumber)
 
       //Handlebars
       var source = $("#template_movie").html();
@@ -105,8 +106,8 @@ $(document).ready( function() {
       var context = {
         title: movieTitle,
         original_title: movieOriginalTitle,
-        original_language: movieOriginalLanguage,
-        vote_average: movieVoteAverage
+        original_language: movieLanguageFlag,
+        vote_average: movieVoteAverageStars
       };
 
       //Compilazione Handlebars
@@ -148,6 +149,64 @@ $(document).ready( function() {
     $("ul.movies_list").append(html)
   }
   //end Function printError
+
+  //Function voteAverageStars
+  //Necessita come attributo di un numero decimale da 1 a 10
+  //Trasforma il voto da 1 a 10 decimale in un numero intero da 1 a 5
+  //Arrotonda sempre per eccesso all’unità successiva
+  //così da permetterci di stampare a schermo un numero di stelle piene che vanno da 1 a 5
+  //Le stelle sono piene o vuote a seconda del voteAverage. Mai piene in parte
+  //Ritorna una stringa con 5 tag i concatenati
+  function voteAverageStars (number1to10) {
+    var message = ""
+    number1to5Int = Math.ceil(number1to10 / 2); // numero intero da 1 a 5
+
+    //Se il voto medio e` uguale a 0
+    //Creo un messaggio per informare utente che non ci sono voti per questo titolo
+    if (number1to5Int === 0) {
+      message = "<span>There are no votes for this title</span>"
+    }
+
+    //Se il voto e` superiore a 0
+    //Trasformo il valore di media voto espresso in numero in simboli grafici
+    //Per il momento mi limito a scrivere html sotto forma di stringhe concatenate
+    else {
+      var fullStars = "";
+      for (var counterFullStars = 0; counterFullStars < number1to5Int; counterFullStars++) {
+        var singleFullStar = '<i class="fas fa-star ' + 'full_star' + '"></i>';
+        message += singleFullStar;
+      }
+      var emptyStars = "";
+      for(var counterEmptyStars = number1to5Int; counterEmptyStars < 5; counterEmptyStars++) {
+        var singleEmptyStar = '<i class="fas fa-star"></i>';
+        message += singleEmptyStar;
+      }
+    }
+    return message
+  }
+  //end Function voteAverageStars
+
+  //Function languageFlag
+  //Necessita come attributo di una stringa che rappresenti un linguaggio es(it, en)
+  //Si appoggia al sito web https://www.countryflags.io/
+  //Coverte la stringa rappresentate la lingua nella img flag corrispondente .png
+  //Scrive solo html sotto forma di stringa concatenata e non stampa niente
+  //Ritorna una stringa con un tag img compilato html ma non stampato
+  function languageFlag (language) {
+    //Corrego incongruenze tra versione Iso e linguaggio utilizzato da www.countryflags.io
+    if (language === "en") {
+      language = "us";
+    }else if (language === "da") {
+      language = "dk";
+    }else if (language === "cs") {
+      language = "cz"
+    }
+
+    //Compilo html img inserendo il riferimento al language code per richiamare la corretta flag
+    var flagImg =  '<img src="https://www.countryflags.io/' + language + '/flat/64.png">'
+    return flagImg
+  }
+  //end Function languageFlag
 
 })
 //end Jquery
