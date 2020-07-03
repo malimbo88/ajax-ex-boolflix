@@ -8,8 +8,8 @@ $(document).ready( function() {
 
   //Evento button click su Search button
   $("button#btn_search").click( function() {
-    var apiQuery = $("input#search_movie").val();
-    var moviesList = $(".movies_list");
+    var apiQuery = $("input#search_content").val();
+    var moviesList = $(".content_list");
     var errorList = $(".error_list");
     resetHtml (moviesList);
     resetHtml (errorList);
@@ -17,16 +17,18 @@ $(document).ready( function() {
     searchDataApi (apiKey, apiQuery, apiTypeTvShow);
   });
 
-  // //Evento keypress enter su Search bar
-  // $("input#search_movie").keypress( function() {
-  //   if(event.which === 13 || event.keyCode === 13) {
-  //     var apiQuery = $("input#search_movie").val()
-  //     var moviesList = $(".movies_list")
-  //     resetHtml (moviesList);
-  //     searchTvApi (apiTvUrl, apiKey, apiQuery);
-  //     searchMovieApi (apiMovieUrl, apiKey, apiQuery)
-  //   }
-  // });
+  //Evento keypress enter su Search bar
+  $("input#search_content").keypress( function() {
+    if(event.which === 13 || event.keyCode === 13) {
+      var apiQuery = $("input#search_content").val();
+      var moviesList = $(".content_list");
+      var errorList = $(".error_list");
+      resetHtml (moviesList);
+      resetHtml (errorList);
+      searchDataApi (apiKey, apiQuery, apiTypeMovie);
+      searchDataApi (apiKey, apiQuery, apiTypeTvShow);
+    }
+  });
 
   //Function searchMovieApi
   //I valori sono: key authentication Api,type tipo di contenuto (movie or tv), query Api = al .val input search
@@ -56,16 +58,23 @@ $(document).ready( function() {
           var dataSuccessResults = dataSuccess.results;
           //Nel caso Api in base ai valori di ricerca digitati da utente
           //Non produca alcun risultato, stampo un messaggio di errore
-          if (dataSuccessResults.length === 0 && $("ul.error_list").length === 0) {
+          console.log(dataSuccessResults.length)
+          if (dataSuccessResults.length === 0) {
             var errorType = "Internal Error"
-            var errorMessage = "We are sorry. Your search produced no results in Movies."
+            var errorMessage = "ciao"
+            if (type  === "movie") {
+              errorMessage = "We are sorry. Your search produced no results in Movies."
+            }
+            else if (type === "tv") {
+              errorMessage = "We are sorry. Your search produced no results in Tv shows."
+            }
             printError (errorType, errorMessage)
           }
 
           //Nel caso Api in base ai valori di ricerca digitati da utente
           //Produca risultato, stampo i risultati prodotti
           else {
-            printData (dataSuccessResults)
+            printData (dataSuccessResults, type)
           }
         },
         error: function (dataError) {
@@ -99,36 +108,48 @@ $(document).ready( function() {
   //Cerca tra tutti gli oggetti di un Array
   //Per ogni oggetto legge i valori delle chiavi necessarie
   //Stampa i valori trovati con Handlebars
-  function printData (array) {
+  function printData (array, type) {
     var index = 0;
     while (index < array.length) {
-      var currentMovieObject = array[index];
-      var movieTitle = currentMovieObject.title
-      var movieOriginalTitle = currentMovieObject.original_title
-      var movieTypeResult = "Movie";
-      var movieOriginalLanguage = currentMovieObject.original_language
-      var movieLanguageFlag = languageFlag (movieOriginalLanguage)
-      var movieVoteAverageNumber = currentMovieObject.vote_average
-      var movieVoteAverageStars = voteAverageStars (movieVoteAverageNumber)
+      var currentDataObject = array[index];
+
+      //Se il tipo di contenuto e` movie
+      //dall'oggetto che mi fornisce Api leggo il valore di title e original_title
+      if (type === "movie") {
+        var dataTitle = currentDataObject.title
+        var dataOriginalTitle = currentDataObject.original_title
+      }
+      //Se il tipo di contenuto e` tv
+      //dall'oggetto che mi fornisce Api leggo il valore di name e original_name
+      else if (type === "tv") {
+        var dataTitle = currentDataObject.name
+        var dataOriginalTitle = currentDataObject.original_name
+      }
+
+      var dataTypeResult = type;
+      var dataOriginalLanguage = currentDataObject.original_language
+      var dataLanguageFlag = languageFlag (dataOriginalLanguage)
+      var dataVoteAverageNumber = currentDataObject.vote_average
+      var dataVoteAverageStars = voteAverageStars (dataVoteAverageNumber)
 
       //Handlebars
-      var source = $("#template_movie").html();
+      var source = $("#template_content").html();
       var template = Handlebars.compile(source);
 
       //Creo oggetto per compilazione Handelbars
       var context = {
-        title: movieTitle,
-        original_title: movieOriginalTitle,
-        type_result: movieTypeResult,
-        original_language: movieLanguageFlag,
-        vote_average: movieVoteAverageStars
+        title: dataTitle,
+        original_title: dataOriginalTitle,
+        type_result: dataTypeResult,
+        original_language: dataLanguageFlag,
+        vote_average: dataVoteAverageStars
       };
 
       //Compilazione Handlebars
       var html = template(context);
 
       //Appendo tag Handlebars compilato nel Dom
-      $("ul.movies_list").append(html)
+      $("ul.content_list").append(html)
 
       index++
     }
@@ -346,20 +367,5 @@ $(document).ready( function() {
     return languageReturn;
   }
   //end Function languageFlag
-
-  //Function emptyTag
-  //Verifica che un tag sia vuoto
-  //Se il tag e` vuoto torna true
-  //Se il tag NON e` vuoto torna false
-  //Ritorna un valore booleano
-  function isEmpty (tag) {
-    if (tag.html() === "") {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-  //end Function emptyTag
 })
 //end Jquery
