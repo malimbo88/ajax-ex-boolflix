@@ -84,7 +84,7 @@ $(document).ready( function() {
           //Se il codice di errore e` 422
           //In questo caso utente ha lasciato vuota la input bar
           //Se la input bar rimane vacante la Api non puo funzionare
-          if (apiErrorNumber === 422 && $(".error_list > *").length === 0) {
+          if (apiErrorNumber === 422 && $("ul.error_list > li.error_message").length === 0) {
             var errorType = "Internal Error"
             var errorMessage = "Maybe the search bar is empty. You must write a text in search field.";
             printError (errorType, errorMessage);
@@ -131,6 +131,17 @@ $(document).ready( function() {
       var dataLanguageFlag = languageFlag (dataOriginalLanguage)
       var dataVoteAverageNumber = currentDataObject.vote_average
       var dataVoteAverageStars = voteAverageStars (dataVoteAverageNumber)
+      var dataPosterPath = currentDataObject.poster_path
+      var dataOverview = currentDataObject.overview
+      //Se Overview e` una stringa vuota
+      if(dataOverview === "") {
+        dataOverview = "No overview available";
+      }
+
+      //Array con Possibili size of image
+      var posterSizes = ["w92","w154","w185","w342","w500","w780","original"];
+      //Richiamo la stringa url necessaria per stampare l'immagine
+      var dataPosterPathCompiled = posterPath (posterSizes, 6, dataPosterPath)
 
       //Handlebars
       var source = $("#template_content").html();
@@ -142,7 +153,9 @@ $(document).ready( function() {
         original_title: dataOriginalTitle,
         type_result: dataTypeResult,
         original_language: dataLanguageFlag,
-        vote_average: dataVoteAverageStars
+        vote_average: dataVoteAverageStars,
+        poster_path: dataPosterPathCompiled,
+        overview: dataOverview
       };
 
       //Compilazione Handlebars
@@ -367,5 +380,23 @@ $(document).ready( function() {
     return languageReturn;
   }
   //end Function languageFlag
+
+  //Function posterPath
+  //Crea la stringa Url utile per richiamare la img Poster relativa a un contenuto
+  //Ritorna una stringa adatta a richiamare una immagine
+  function posterPath (arrayPosterSize, indexArrayPosterSize, dataPoster) {
+    var basePosterUrl = "https://image.tmdb.org/t/p/";
+    var currentSize = arrayPosterSize[indexArrayPosterSize];
+    //Se dataPoster che contiene il valore della chiave .poster_path fornito da Api torna null
+    if (dataPoster === null) {
+      return "img/no_image.svg"
+    }
+    //Compilo stringa con url necessario a Api per leggere in libreria e selzionare img corrispondente
+    else {
+      return basePosterUrl + currentSize + dataPoster;
+    }
+  }
+  //end Function posterPath
+
 })
 //end Jquery

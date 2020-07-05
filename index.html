@@ -6,44 +6,107 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     <link rel="stylesheet" href="css/style.css">
     <title>ajax-ex-boolflix</title>
   </head>
   <body>
-    <div class="ciao">
-    </div>
+
+    <!-- Genearl Container -->
     <div class="general_container">
-      <input type="text" placeholder="search" id="search_content"></input>
-      <button type="button" name="button" id="btn_search">Search Button</button>
-      <div class="movies_wrapper">
-        <ul class="error_list"></ul>
-        <ul class="content_list"></ul>
-      </div>
+
+      <!-- Header -->
+      <header>
+
+        <!-- Head bar -->
+        <div class="head_bar clear">
+          <!-- logo -->
+          <div class="logo">
+            <span>Boolflix</span>
+          </div>
+          <!-- end logo -->
+
+          <!-- Search -->
+          <div class="search_area">
+            <input type="text" placeholder="Search..." id="search_content"></input>
+            <button type="button" name="button" id="btn_search">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <!-- end Search -->
+
+        </div>
+        <!-- end Head bar -->
+
+      </header>
+      <!-- end Header -->
+
+      <!-- Main -->
+      <main>
+        <div class="content_wrapper">
+          <!-- Error -->
+          <ul class="error_list"></ul>
+          <!-- end Error -->
+
+          <!-- Content -->
+          <ul class="content_list container_flex"></ul>
+          <!-- end Content -->
+        </div>
+      </main>
+      <!-- end Main -->
+
     </div>
+    <!-- Genearl Container -->
 
     <!-- Handelbars template Movies & Tv shows -->
     <script id="template_content" type="text/x-handlebars-template">
 
       <!-- movie - {{title}} -->
       <li class="single_content">
-        <h2>{{title}}</h2>
-        <ul>
+        <div class="poster_image">
+          <img src="{{poster_path}}" alt="{{title}}">
+        </div>
+
+        <!-- content info -->
+        <ul class="content_info">
           <li>
-            <span class="original_title">original title: {{original_title}}</span>
-          </li>
-          <li>
-            <span class="type_result">type: {{type_result}}</span>
-          </li>
-          <li>
-            <div class="language_flag">
-              {{{original_language}}}
+            <div class="title">
+              <h3>{{title}}</h3>
             </div>
           </li>
           <li>
+            <div class="original_title">
+              <h4 class="info_title">Original title:&nbsp;</h4>
+              <span>{{original_title}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="type_result">
+              <h4 class="info_title">Type:&nbsp;</h4>
+              <span>{{type_result}}</span>
+            </div>
+          </li>
+          <li>
+            <div class="language_flag">
+              <h4 class="info_title">Language:&nbsp;</h4>
+              <div class="flag_img_wrapper">{{{original_language}}}</div>
+            </div>
+          </li>
+          <li>
+            <h4 class="info_title">Vote:&nbsp;</h4>
             <div class="vote_average_icons">{{{vote_average}}}</div>
           </li>
+          <li>
+            <div class="text_overview">
+              <h4 class="info_title">Overview:&nbsp;</h4>
+              <span>{{{overview}}}</span>
+            </div>
+          </li>
         </ul>
+        <!-- content info -->
+
       </li>
       <!-- end movie - {{title}} -->
 
@@ -55,8 +118,12 @@
 
       <!-- error - {{error_type}} -->
       <li class="error_message">
+        <span class="error_icon">&#9888;</span>
         <h2>{{error_type}}</h2>
-        <div><span>Error: {{error_text}}</span></div>
+        <div>
+          <span class="error_fixed_text">Error:</span>
+          <span class="error_text">{{error_text}}</span>
+        </div>
       </li>
       <!-- error - {{error_type}} -->
 
