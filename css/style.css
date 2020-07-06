@@ -116,6 +116,7 @@ body {
 .single_content {
   flex-basis: calc((100% / 4) - 15px);
   margin:0 20px 20px 0;
+  height: 100%;
   border: 10px solid #000;
   background-color: #000;
   position: relative;
