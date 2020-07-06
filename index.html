@@ -45,15 +45,19 @@
 
       <!-- Main -->
       <main>
-        <div class="content_wrapper">
-          <!-- Error -->
-          <ul class="error_list"></ul>
-          <!-- end Error -->
 
-          <!-- Content -->
-          <ul class="content_list container_flex"></ul>
-          <!-- end Content -->
+        <!-- Error -->
+        <div class="error_wrapper">
+          <ul class="error_list"></ul>
         </div>
+        <!-- end Error -->
+
+        <!-- Content -->
+        <div class="content_wrapper">
+          <ul class="content_list container_flex"></ul>
+        </div>
+        <!-- end Content -->
+        
       </main>
       <!-- end Main -->
 
@@ -65,9 +69,7 @@
 
       <!-- movie - {{title}} -->
       <li class="single_content">
-        <div class="poster_image">
-          <img src="{{poster_path}}" alt="{{title}}">
-        </div>
+        <div class="poster_image">{{{poster_path}}}</div>
 
         <!-- content info -->
         <ul class="content_info">

@@ -133,6 +133,7 @@ $(document).ready( function() {
       var dataVoteAverageStars = voteAverageStars (dataVoteAverageNumber)
       var dataPosterPath = currentDataObject.poster_path
       var dataOverview = currentDataObject.overview
+
       //Se Overview e` una stringa vuota
       if(dataOverview === "") {
         dataOverview = "No overview available";
@@ -141,7 +142,7 @@ $(document).ready( function() {
       //Array con Possibili size of image
       var posterSizes = ["w92","w154","w185","w342","w500","w780","original"];
       //Richiamo la stringa url necessaria per stampare l'immagine
-      var dataPosterPathCompiled = posterPath (posterSizes, 6, dataPosterPath)
+      var dataPosterPathCompiled = posterPath (posterSizes, 5, dataPosterPath, dataTitle)
 
       //Handlebars
       var source = $("#template_content").html();
@@ -233,129 +234,21 @@ $(document).ready( function() {
   //Scrive solo html sotto forma di stringa concatenata e non stampa niente
   //Ritorna una stringa con un tag img compilato html ma non stampato
   function languageFlag (languageIso6391) {
-    var countryCodes = {
-    "aa": "dj",
-    "af": "za",
-    "ak": "gh",
-    "sq": "al",
-    "am": "et",
-    "az": "az",
-    "bm": "ml",
-    "be": "by",
-    "bn": "bd",
-    "bi": "vu",
-    "bs": "ba",
-    "bg": "bg",
-    "my": "mm",
-    "ca": "ad",
-    "zh": "cn",
-    "hr": "hr",
-    "cs": "cz",
-    "da": "dk",
-    "dv": "mv",
-    "nl": "nl",
-    "dz": "bt",
-    "en": "gb",
-    "et": "ee",
-    "fj": "fj",
-    "fil": "ph",
-    "fi": "fi",
-    "fr": "fr",
-    "gaa": "gh",
-    "ka": "ge",
-    "de": "de",
-    "el": "gr",
-    "gu": "in",
-    "ht": "ht",
-    "he": "il",
-    "hi": "in",
-    "ho": "pg",
-    "hu": "hu",
-    "is": "is",
-    "ig": "ng",
-    "id": "id",
-    "ga": "ie",
-    "it": "it",
-    "ja": "jp",
-    "kr": "ne",
-    "kk": "kz",
-    "km": "kh",
-    "kmb": "ao",
-    "rw": "rw",
-    "kg": "cg",
-    "ko": "kr",
-    "kj": "ao",
-    "ku": "iq",
-    "ky": "kg",
-    "lo": "la",
-    "la": "va",
-    "lv": "lv",
-    "ln": "cg",
-    "lt": "lt",
-    "lu": "cd",
-    "lb": "lu",
-    "mk": "mk",
-    "mg": "mg",
-    "ms": "my",
-    "mt": "mt",
-    "mi": "nz",
-    "mh": "mh",
-    "mn": "mn",
-    "mos": "bf",
-    "ne": "np",
-    "nd": "zw",
-    "nso": "za",
-    "no": "no",
-    "nb": "no",
-    "nn": "no",
-    "ny": "mw",
-    "pap": "aw",
-    "ps": "af",
-    "fa": "ir",
-    "pl": "pl",
-    "pt": "pt",
-    "pa": "in",
-    "qu": "wh",
-    "ro": "ro",
-    "rm": "ch",
-    "rn": "bi",
-    "ru": "ru",
-    "sg": "cf",
-    "sr": "rs",
-    "srr": "sn",
-    "sn": "zw",
-    "si": "lk",
-    "sk": "sk",
-    "sl": "si",
-    "so": "so",
-    "snk": "sn",
-    "nr": "za",
-    "st": "ls",
-    "es": "es",
-    "ss": "sz",
-    "sv": "se",
-    "tl": "ph",
-    "tg": "tj",
-    "ta": "lk",
-    "te": "in",
-    "tet": "tl",
-    "th": "th",
-    "ti": "er",
-    "tpi": "pg",
-    "ts": "za",
-    "tn": "bw",
-    "tr": "tr",
-    "tk": "tm",
-    "uk": "ua",
-    "umb": "ao",
-    "ur": "pk",
-    "uz": "uz",
-    "ve": "za",
-    "vi": "vn",
-    "cy": "gb",
-    "wo": "sn",
-    "xh": "za"
-    }//iso639-1 To Iso3166-1
+    //Variabile che indica iso639-1 (nome key) To Iso3166-1(valore key)
+    var countryCodes = { "aa": "dj", "af": "za", "ak": "gh", "sq": "al", "am": "et", "az": "az", "bm": "ml", "be": "by",
+    "bn": "bd", "bi": "vu", "bs": "ba", "bg": "bg", "my": "mm", "ca": "ad", "zh": "cn", "hr": "hr", "cs": "cz", "da": "dk",
+    "dv": "mv", "nl": "nl", "dz": "bt", "en": "gb", "et": "ee", "fj": "fj", "fil": "ph", "fi": "fi", "fr": "fr", "gaa": "gh",
+    "ka": "ge", "de": "de", "el": "gr", "gu": "in", "ht": "ht", "he": "il", "hi": "in", "ho": "pg", "hu": "hu", "is": "is",
+    "ig": "ng", "id": "id", "ga": "ie", "it": "it", "ja": "jp", "kr": "ne", "kk": "kz", "km": "kh", "kmb": "ao", "rw": "rw",
+    "kg": "cg", "ko": "kr", "kj": "ao", "ku": "iq", "ky": "kg", "lo": "la", "la": "va", "lv": "lv", "ln": "cg", "lt": "lt",
+    "lu": "cd", "lb": "lu", "mk": "mk", "mg": "mg", "ms": "my", "mt": "mt", "mi": "nz", "mh": "mh", "mn": "mn", "mos": "bf",
+    "ne": "np", "nd": "zw", "nso": "za", "no": "no", "nb": "no", "nn": "no", "ny": "mw", "pap": "aw", "ps": "af","fa": "ir",
+    "pl": "pl", "pt": "pt", "pa": "in", "qu": "wh", "ro": "ro", "rm": "ch", "rn": "bi", "ru": "ru", "sg": "cf", "sr": "rs",
+    "srr": "sn", "sn": "zw", "si": "lk", "sk": "sk", "sl": "si", "so": "so", "snk": "sn", "nr": "za", "st": "ls", "es": "es",
+    "ss": "sz", "sv": "se", "tl": "ph", "tg": "tj", "ta": "lk", "te": "in", "tet": "tl", "th": "th", "ti": "er", "tpi": "pg",
+    "ts": "za", "tn": "bw", "tr": "tr", "tk": "tm", "uk": "ua", "umb": "ao", "ur": "pk", "uz": "uz", "ve": "za", "vi": "vn",
+    "cy": "gb", "wo": "sn", "xh": "za" }
+
     var languageReturn = "";
     var check = false;
     for (var key in countryCodes) {
@@ -382,19 +275,28 @@ $(document).ready( function() {
   //end Function languageFlag
 
   //Function posterPath
+  //Richiede come argomenti:
+  // - array contenente le stringhe di url da inserire in base al size image richiesto
+  // - il numero che indica la posizione in indice della stringa selezionata nell'arrayPosterSize
+  // - dataPoster e` la stringa url generata dall'Api per ogni immagine per richiamare la relativa immagine
+  // - il valore da inserire nell'attributo Alt di ogni immagine
   //Crea la stringa Url utile per richiamare la img Poster relativa a un contenuto
-  //Ritorna una stringa adatta a richiamare una immagine
-  function posterPath (arrayPosterSize, indexArrayPosterSize, dataPoster) {
+  //Ritorna una stringa che contiene Html adatta a stampare una immagine
+  function posterPath (arrayPosterSize, indexArrayPosterSize, dataPoster, altAtrr) {
+    var imgHtml = "";
+    var noImageSrc = "img/no_image.svg"
     var basePosterUrl = "https://image.tmdb.org/t/p/";
     var currentSize = arrayPosterSize[indexArrayPosterSize];
     //Se dataPoster che contiene il valore della chiave .poster_path fornito da Api torna null
     if (dataPoster === null) {
-      return "img/no_image.svg"
+      imgHtml = "<img src=\"" + noImageSrc + "\"" + "alt=\"" + "No image available" + "\">"
     }
     //Compilo stringa con url necessario a Api per leggere in libreria e selzionare img corrispondente
     else {
-      return basePosterUrl + currentSize + dataPoster;
+      imgHtml = "<img src=\"" + basePosterUrl + currentSize + dataPoster + "\"" + " alt=\"" + altAtrr + "\">"
     }
+    console.log(imgHtml)
+    return imgHtml
   }
   //end Function posterPath
 
